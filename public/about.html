@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6f4e37">
+    <meta name="description" content="Описание лабораторной работы №7 по Web-технологиям: Express, SQLite и CRUD.">
+    <title>О работе | ЛР №7</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <div>
+                <p class="eyebrow">Лабораторная работа №7 · Вариант 10</p>
+                <h1>О лабораторной работе</h1>
+                <p class="header-description">Реляционная база данных SQLite и CRUD-операции в Express.</p>
+            </div>
+            <button type="button" id="themeToggle" class="button button-secondary theme-button">Тёмная тема</button>
+        </div>
+    </header>
+
+    <nav class="main-nav" aria-label="Основная навигация">
+        <a href="/">Курсы</a>
+        <a class="active" href="/about">О работе</a>
+    </nav>
+
+    <main class="page-content about-content">
+        <section class="content-card">
+            <p class="eyebrow">Цель</p>
+            <h2>Работа с базой данных</h2>
+            <p>Цель лабораторной работы — изучить основы работы с реляционными базами данных, реализовать создание, чтение, обновление и удаление записей, а также интегрировать операции с сервером Express.</p>
+        </section>
+
+        <section class="content-card">
+            <p class="eyebrow">Вариант 10</p>
+            <h2>Курсы и преподаватели</h2>
+            <p>Основная таблица <code>courses</code> содержит поля:</p>
+            <div class="table-wrap">
+                <table class="schema-table">
+                    <thead>
+                        <tr><th>Поле</th><th>Тип</th><th>Назначение</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td>INTEGER PRIMARY KEY</td><td>Идентификатор курса</td></tr>
+                        <tr><td><code>course_name</code></td><td>TEXT NOT NULL</td><td>Название курса</td></tr>
+                        <tr><td><code>teacher_id</code></td><td>INTEGER NOT NULL</td><td>Внешний ключ преподавателя</td></tr>
+                        <tr><td><code>credits</code></td><td>REAL NOT NULL</td><td>Положительное количество кредитов</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Имя преподавателя хранится в таблице <code>teachers</code>. В таблице курсов сохраняется только <code>teacher_id</code>; для отображения имя преподавателя получается через SQL JOIN.</p>
+        </section>
+
+        <section class="content-card">
+            <p class="eyebrow">CRUD</p>
+            <h2>Маршруты сервера</h2>
+            <div class="endpoint-list">
+                <div class="endpoint-item"><code>GET /api/courses</code><p>Получить список курсов.</p></div>
+                <div class="endpoint-item"><code>GET /api/courses?teacher_id=3</code><p>Получить курсы выбранного преподавателя.</p></div>
+                <div class="endpoint-item"><code>POST /api/courses</code><p>Создать курс. Название и преподаватель обязательны, кредиты должны быть положительными.</p></div>
+                <div class="endpoint-item"><code>PUT /api/courses/:id</code><p>Изменить курс по идентификатору.</p></div>
+                <div class="endpoint-item"><code>DELETE /api/courses/:id</code><p>Удалить курс по идентификатору.</p></div>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <p class="eyebrow">Структура</p>
+            <h2>Разделение ответственности</h2>
+            <p><code>server.js</code> запускает Express и подключает маршруты. Файлы из папки <code>routes</code> обрабатывают HTTP-запросы. Модули из <code>database</code> создают подключение к SQLite и содержат функции для работы с таблицами. Клиентская часть находится в папке <code>public</code>.</p>
+            <a class="button button-primary about-link" href="/">Вернуться к курсам</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2026 Коциенко Илья Игоревич · Группа 932401</p>
+        <p>Web-технологии · Лабораторная работа №7</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6f4e37">
+    <meta name="description" content="Каталог учебных курсов с CRUD-операциями и хранением в SQLite.">
+    <title>Курсы и преподаватели | ЛР №7</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <div>
+                <p class="eyebrow">Лабораторная работа №7 · Вариант 10</p>
+                <h1>Курсы и преподаватели</h1>
+                <p class="header-description">Управляй учебными курсами и сохраняй изменения в базе SQLite.</p>
+            </div>
+            <button type="button" id="themeToggle" class="button button-secondary theme-button">Тёмная тема</button>
+        </div>
+    </header>
+
+    <nav class="main-nav" aria-label="Основная навигация">
+        <a class="active" href="/">Курсы</a>
+        <a href="/about">О работе</a>
+    </nav>
+
+    <main class="page-content">
+        <section class="intro-row">
+            <div>
+                <p class="eyebrow">Каталог</p>
+                <h2>Учебные курсы</h2>
+                <p class="muted-text">Добавляй, изменяй, фильтруй и удаляй записи. Данные сохраняются в локальной базе.</p>
+            </div>
+            <div class="database-status" id="databaseStatus" role="status">
+                <span class="status-dot"></span>
+                <span>Подключение к БД…</span>
+            </div>
+        </section>
+
+        <section class="stats-grid" aria-label="Сводная информация">
+            <article class="stat-card">
+                <span class="stat-label">Всего курсов</span>
+                <strong class="stat-value" id="courseCount">—</strong>
+                <span class="stat-description">Записи в таблице courses</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Преподавателей</span>
+                <strong class="stat-value" id="teacherCount">—</strong>
+                <span class="stat-description">Связи через teacher_id</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Хранилище</span>
+                <strong class="stat-value stat-value-small">SQLite</strong>
+                <span class="stat-description">Файл data/courses.db</span>
+            </article>
+        </section>
+
+        <section class="content-card" aria-labelledby="formTitle">
+            <div class="section-heading">
+                <p class="eyebrow">CRUD · Create / Update</p>
+                <h2 id="formTitle">Добавить курс</h2>
+                <p>Заполни название курса, выбери преподавателя и укажи количество кредитов.</p>
+            </div>
+
+            <form id="courseForm" class="course-form">
+                <div class="form-group form-group-wide">
+                    <label for="courseName">Название курса</label>
+                    <input type="text" id="courseName" name="course_name" maxlength="150" placeholder="Например, Web-технологии" required>
+                </div>
+                <div class="form-group">
+                    <label for="teacherId">Преподаватель</label>
+                    <select id="teacherId" name="teacher_id" required>
+                        <option value="">Загрузка списка…</option>
+                    </select>
+                </div>
+                <div class="form-group credits-field">
+                    <label for="credits">Кредиты</label>
+                    <input type="number" id="credits" name="credits" min="0.1" step="0.1" value="3" required>
+                </div>
+                <div class="form-actions form-group-wide">
+                    <button type="submit" id="saveButton" class="button button-primary">Добавить курс</button>
+                    <button type="button" id="cancelEditButton" class="button button-secondary" hidden>Отменить изменение</button>
+                </div>
+            </form>
+            <p id="formMessage" class="status-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="content-card courses-card" aria-labelledby="coursesTitle">
+            <div class="section-heading table-heading">
+                <div>
+                    <p class="eyebrow">CRUD · Read / Delete</p>
+                    <h2 id="coursesTitle">Список курсов</h2>
+                    <p>Для изменения записи нажми «Изменить», для удаления — «Удалить».</p>
+                </div>
+                <div class="filter-control">
+                    <label for="teacherFilter">Фильтр по преподавателю</label>
+                    <select id="teacherFilter">
+                        <option value="">Все преподаватели</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Название курса</th>
+                            <th scope="col">Преподаватель</th>
+                            <th scope="col">Кредиты</th>
+                            <th scope="col">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody">
+                        <tr><td colspan="5" class="empty-cell">Загрузка курсов…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p id="listMessage" class="status-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="api-note">
+            <h2>Маршруты API</h2>
+            <p>Интерфейс обращается к Express API, а данные читаются и изменяются в SQLite.</p>
+            <div class="api-list">
+                <code>GET /api/courses</code>
+                <code>GET /api/courses?teacher_id=3</code>
+                <code>POST /api/courses</code>
+                <code>PUT /api/courses/:id</code>
+                <code>DELETE /api/courses/:id</code>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2026 Коциенко Илья Игоревич · Группа 932401</p>
+        <p>Web-технологии · Лабораторная работа №7</p>
+    </footer>
+
+    <script src="/assets/js/script.js"></script>
+</body>
+</html>

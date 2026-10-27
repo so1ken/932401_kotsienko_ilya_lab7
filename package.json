@@ -1,0 +1,25 @@
+{
+  "name": "932401-kotsienko-ilya-lab7",
+  "version": "1.0.0",
+  "description": "Лабораторная работа №7 по Web-технологиям: SQLite и CRUD-операции с Express",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "web-technologies",
+    "express",
+    "sqlite",
+    "crud",
+    "courses"
+  ],
+  "author": "Коциенко Илья Игоревич",
+  "license": "ISC",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
